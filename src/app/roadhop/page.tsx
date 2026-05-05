@@ -9,17 +9,37 @@ import { addCoins, removeCoins, validateBet } from "@/lib/coins";
 import { cn } from "@/lib/cn";
 
 type GameState = "idle" | "active" | "lost" | "cashed";
+type Difficulty = "easy" | "normal" | "hard";
 
 const cols = 7;
 const rows = 8;
 const startCol = 3;
-const laneSpeeds = [0, 0.82, -1.05, 0.68, -0.92, 1.18, -0.74, 0];
-const laneCarCounts = [0, 2, 3, 2, 3, 2, 2, 0];
+const difficultyConfig: Record<Difficulty, { label: string; speeds: number[]; carCounts: number[]; payoutBoost: number }> = {
+  easy: {
+    label: "Easy",
+    speeds: [0, 0.55, -0.65, 0.5, -0.6, 0.72, -0.48, 0],
+    carCounts: [0, 1, 2, 1, 2, 1, 2, 0],
+    payoutBoost: 0.9
+  },
+  normal: {
+    label: "Normal",
+    speeds: [0, 0.82, -1.05, 0.68, -0.92, 1.18, -0.74, 0],
+    carCounts: [0, 2, 3, 2, 3, 2, 2, 0],
+    payoutBoost: 1
+  },
+  hard: {
+    label: "Hard",
+    speeds: [0, 1.05, -1.32, 0.95, -1.22, 1.48, -1.0, 0],
+    carCounts: [0, 3, 3, 3, 4, 3, 3, 0],
+    payoutBoost: 1.25
+  }
+};
 
-function laneHazards() {
+function laneHazards(difficulty: Difficulty) {
+  const { carCounts } = difficultyConfig[difficulty];
   return Array.from({ length: rows }, (_, row) => {
     if (row === 0 || row === rows - 1) return [];
-    const count = laneCarCounts[row];
+    const count = carCounts[row];
     const spacing = cols / count;
     return Array.from({ length: count }, (__, index) => (index * spacing + row * 0.7) % cols);
   });
@@ -38,20 +58,25 @@ function laneHasCarAt(lane: number[], col: number) {
 
 export default function RoadHopPage() {
   const [bet, setBet] = useState(100);
+  const [difficulty, setDifficulty] = useState<Difficulty>("normal");
   const [activeBet, setActiveBet] = useState(0);
   const [position, setPosition] = useState({ row: rows - 1, col: startCol });
-  const [hazards, setHazards] = useState<number[][]>(() => laneHazards());
+  const [hazards, setHazards] = useState<number[][]>(() => laneHazards("normal"));
   const [state, setState] = useState<GameState>("idle");
   const [bestRow, setBestRow] = useState(rows - 1);
   const [message, setMessage] = useState("Start a road hop run. Move lane by lane and cash out before getting hit.");
 
+  const config = difficultyConfig[difficulty];
   const progress = rows - 1 - bestRow;
-  const multiplier = useMemo(() => Number((1 + progress * 0.38 + progress ** 1.35 * 0.12).toFixed(2)), [progress]);
+  const multiplier = useMemo(
+    () => Number((1 + (progress * 0.38 + progress ** 1.35 * 0.12) * config.payoutBoost).toFixed(2)),
+    [config.payoutBoost, progress]
+  );
   const payout = Math.floor(activeBet * multiplier);
 
   const resetBoard = () => {
     setPosition({ row: rows - 1, col: startCol });
-    setHazards(laneHazards());
+    setHazards(laneHazards(difficulty));
     setBestRow(rows - 1);
   };
 
@@ -66,7 +91,7 @@ export default function RoadHopPage() {
     setActiveBet(check.bet);
     resetBoard();
     setState("active");
-    setMessage("Run live. Hop upward, dodge traffic, and cash out after making progress.");
+    setMessage(`${config.label} run live. Hop upward, dodge traffic, and cash out after making progress.`);
   };
 
   const lose = () => {
@@ -76,7 +101,7 @@ export default function RoadHopPage() {
   };
 
   const win = () => {
-    const finalPayout = Math.floor(activeBet * 6.5);
+    const finalPayout = Math.floor(activeBet * Number((6.5 * config.payoutBoost).toFixed(2)));
     addCoins(finalPayout);
     setState("cashed");
     setActiveBet(0);
@@ -104,7 +129,8 @@ export default function RoadHopPage() {
     }
 
     const nextProgress = rows - 1 - Math.min(bestRow, next.row);
-    setMessage(`Safe hop. Current cashout: ${Math.floor(activeBet * (1 + nextProgress * 0.38 + nextProgress ** 1.35 * 0.12)).toLocaleString()} fake coins.`);
+    const nextMultiplier = 1 + (nextProgress * 0.38 + nextProgress ** 1.35 * 0.12) * config.payoutBoost;
+    setMessage(`Safe hop. Current cashout: ${Math.floor(activeBet * nextMultiplier).toLocaleString()} fake coins.`);
   };
 
   const cashOut = () => {
@@ -120,12 +146,12 @@ export default function RoadHopPage() {
 
     const interval = window.setInterval(() => {
       setHazards((current) =>
-        current.map((lane, row) => lane.map((col) => wrapPosition(col + laneSpeeds[row] * 0.1)))
+        current.map((lane, row) => lane.map((col) => wrapPosition(col + config.speeds[row] * 0.1)))
       );
     }, 100);
 
     return () => window.clearInterval(interval);
-  }, [state]);
+  }, [config.speeds, state]);
 
   useEffect(() => {
     if (state !== "active") return;
@@ -168,7 +194,7 @@ export default function RoadHopPage() {
                     className="pointer-events-none absolute top-1/2 z-10 grid h-[76%] w-[13%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-md border border-rose-200/40 bg-rose-500/25 text-rose-100 shadow-purple transition-[left] duration-100 ease-linear"
                     style={{ left: `${((wrapPosition(carCol) + 0.5) / cols) * 100}%` }}
                   >
-                    <Car className={laneSpeeds[row] < 0 ? "rotate-180" : ""} size={22} />
+                    <Car className={config.speeds[row] < 0 ? "rotate-180" : ""} size={22} />
                   </div>
                 ))}
               </div>
@@ -185,6 +211,32 @@ export default function RoadHopPage() {
             <div className="rounded-lg border border-white/10 bg-white/5 p-4">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Multiplier</p>
               <p className="mt-2 text-3xl font-black text-cyan-100">{multiplier}x</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Difficulty</p>
+            <div className="grid grid-cols-3 gap-2">
+              {(Object.keys(difficultyConfig) as Difficulty[]).map((level) => (
+                <button
+                  key={level}
+                  disabled={state === "active"}
+                  onClick={() => {
+                    setDifficulty(level);
+                    setHazards(laneHazards(level));
+                    setPosition({ row: rows - 1, col: startCol });
+                    setBestRow(rows - 1);
+                    setMessage(`${difficultyConfig[level].label} selected. Traffic and payout risk updated.`);
+                  }}
+                  className={cn(
+                    "rounded-lg border px-3 py-3 text-sm font-black transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60",
+                    difficulty === level
+                      ? "border-cyan-300 bg-cyan-300/20 text-cyan-100 shadow-cyan"
+                      : "border-white/10 bg-white/5 text-slate-300 hover:border-cyan-300/50"
+                  )}
+                >
+                  {difficultyConfig[level].label}
+                </button>
+              ))}
             </div>
           </div>
           <input type="number" min={1} value={bet} disabled={state === "active"} onChange={(event) => setBet(Math.max(1, Number(event.target.value) || 1))} className="w-full rounded-lg border border-slate-600 bg-slate-950/70 px-4 py-3 font-black text-white outline-none focus:border-cyan-300" />
