@@ -462,8 +462,8 @@ export default function PlinkoPage() {
           <p className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm leading-6 text-slate-300">{message}</p>
         </Card>
 
-        <Card className="relative min-h-[360px] overflow-hidden bg-[#252e63]/90 p-0 sm:min-h-[480px] xl:min-h-[560px]">
-          <div className="absolute right-7 top-4 z-20 flex items-center gap-3 text-sm font-bold text-slate-300">
+        <Card className="relative grid min-h-[300px] place-items-center overflow-hidden bg-[#252e63]/90 p-0 sm:min-h-[460px] xl:min-h-[560px]">
+          <div className="absolute right-3 top-3 z-20 flex items-center gap-2 text-xs font-bold text-slate-300 sm:right-7 sm:top-4 sm:gap-3 sm:text-sm">
             <button className="grid h-8 w-8 place-items-center rounded-lg bg-white/5">
               <HelpCircle size={15} />
             </button>
@@ -471,7 +471,10 @@ export default function PlinkoPage() {
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_22%,rgba(59,130,246,.18),transparent_28%),radial-gradient(circle_at_72%_72%,rgba(15,23,42,.55),transparent_34%)]" />
           <div className="absolute inset-0 opacity-50 [clip-path:polygon(0_44%,16%_52%,27%_35%,36%_60%,47%_18%,59%_38%,73%_34%,88%_42%,100%_38%,100%_100%,0_100%)] bg-slate-950/30" />
-          <div ref={boardRef} className="relative z-10 mx-auto aspect-[760/560] w-full max-w-[760px] [&_canvas]:h-full [&_canvas]:w-full" />
+          <div
+            ref={boardRef}
+            className="relative z-10 mx-auto aspect-[760/560] w-[min(100%,760px)] min-w-[260px] max-w-[760px] [&_canvas]:block [&_canvas]:h-full [&_canvas]:w-full"
+          />
         </Card>
       </div>
     </GameShell>

@@ -244,11 +244,11 @@ export default function RoulettePage() {
   return (
     <GameShell eyebrow="Roulette" title="Neon Roulette Table" description="Pick red, black, or green. Red and black pay 2x; green pays 14x. Fake coins only.">
       <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <Card className="relative grid min-h-[430px] place-items-center overflow-hidden bg-[#252e63]/90 p-4 sm:min-h-[540px]">
+        <Card className="relative flex min-h-[390px] flex-col items-center justify-center overflow-hidden bg-[#252e63]/90 p-3 sm:min-h-[540px] sm:p-4">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(34,211,238,.16),transparent_34%),radial-gradient(circle_at_70%_75%,rgba(168,85,247,.18),transparent_30%)]" />
-          <div className="relative z-10 grid aspect-square w-full max-w-[430px] place-items-center">
+          <div className="relative z-10 grid aspect-square w-[min(100%,430px,calc(100dvh-280px))] min-w-[260px] place-items-center">
             <div
-              className="absolute grid h-[89%] w-[89%] place-items-center rounded-full border-[10px] border-slate-950/80 shadow-purple"
+              className="absolute inset-[5.5%] grid place-items-center rounded-full border-[clamp(6px,2vw,10px)] border-slate-950/80 shadow-purple"
               style={{
                 transform: `rotate(${rotation}deg)`,
                 background: `conic-gradient(${pockets
@@ -261,29 +261,29 @@ export default function RoulettePage() {
                 return (
                   <span
                     key={pocket.number}
-                    className="absolute left-1/2 top-1/2 text-[10px] font-black text-white drop-shadow"
+                    className="absolute left-1/2 top-1/2 text-[clamp(7px,2vw,10px)] font-black text-white drop-shadow"
                     style={{
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-168px) rotate(90deg)`
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(clamp(-168px,-39vw,-112px)) rotate(90deg)`
                     }}
                   >
                     {pocket.number}
                   </span>
                 );
               })}
-              <div className="grid h-[42%] w-[42%] place-items-center rounded-full border-[8px] border-slate-800 bg-slate-950 text-white shadow-xl">
+              <div className="grid h-[42%] w-[42%] place-items-center rounded-full border-[clamp(5px,1.8vw,8px)] border-slate-800 bg-slate-950 text-white shadow-xl">
                 <div className="grid h-[60%] w-[60%] place-items-center rounded-full border border-cyan-200/30 bg-cyan-300/10">
-                  <CircleDot size={52} />
+                  <CircleDot className="h-8 w-8 sm:h-[52px] sm:w-[52px]" />
                 </div>
               </div>
             </div>
-            <div ref={physicsStageRef} className="absolute inset-0 z-20 [&_canvas]:h-full [&_canvas]:w-full" />
+            <div ref={physicsStageRef} className="absolute inset-0 z-20 [&_canvas]:block [&_canvas]:h-full [&_canvas]:w-full" />
           </div>
 
-          <div className="relative z-10 mt-2 text-center">
-            <p className="text-2xl font-black text-white">
+          <div className="relative z-10 mt-3 text-center">
+            <p className="text-xl font-black text-white sm:text-2xl">
               {result ? `${result.number} ${result.color.toUpperCase()}` : "Ready to spin"}
             </p>
-            <p className="mt-2 text-sm font-bold text-slate-400">The ball collides with pins and settles into the pocket ring.</p>
+            <p className="mt-2 max-w-sm text-xs font-bold text-slate-400 sm:text-sm">The ball collides with pins and settles into the pocket ring.</p>
           </div>
         </Card>
 
