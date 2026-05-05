@@ -13,12 +13,26 @@ type GameState = "idle" | "active" | "lost" | "cashed";
 const cols = 7;
 const rows = 8;
 const startCol = 3;
-const laneSpeeds = [0, 2, -3, 1, -2, 3, -1, 0];
+const laneSpeeds = [0, 0.82, -1.05, 0.68, -0.92, 1.18, -0.74, 0];
+const laneCarCounts = [0, 2, 3, 2, 3, 2, 2, 0];
 
 function laneHazards() {
   return Array.from({ length: rows }, (_, row) => {
     if (row === 0 || row === rows - 1) return [];
-    return Array.from({ length: 2 + (row % 2) }, (__, index) => (index * 3 + row) % cols);
+    const count = laneCarCounts[row];
+    const spacing = cols / count;
+    return Array.from({ length: count }, (__, index) => (index * spacing + row * 0.7) % cols);
+  });
+}
+
+function wrapPosition(value: number) {
+  return ((value % cols) + cols) % cols;
+}
+
+function laneHasCarAt(lane: number[], col: number) {
+  return lane.some((carCol) => {
+    const distance = Math.abs(wrapPosition(carCol) - col);
+    return Math.min(distance, cols - distance) < 0.42;
   });
 }
 
@@ -79,7 +93,7 @@ export default function RoadHopPage() {
     setPosition(next);
     setBestRow((current) => Math.min(current, next.row));
 
-    if (hazards[next.row]?.includes(next.col)) {
+    if (laneHasCarAt(hazards[next.row] ?? [], next.col)) {
       lose();
       return;
     }
@@ -106,16 +120,16 @@ export default function RoadHopPage() {
 
     const interval = window.setInterval(() => {
       setHazards((current) =>
-        current.map((lane, row) => lane.map((col) => ((col + laneSpeeds[row]) % cols + cols) % cols))
+        current.map((lane, row) => lane.map((col) => wrapPosition(col + laneSpeeds[row] * 0.1)))
       );
-    }, 900);
+    }, 100);
 
     return () => window.clearInterval(interval);
   }, [state]);
 
   useEffect(() => {
     if (state !== "active") return;
-    if (hazards[position.row]?.includes(position.col)) {
+    if (laneHasCarAt(hazards[position.row] ?? [], position.col)) {
       lose();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,16 +153,24 @@ export default function RoadHopPage() {
         <Card className="overflow-hidden bg-[#252e63]/90">
           <div className="mx-auto grid w-full max-w-xl gap-1 rounded-xl bg-slate-950/30 p-2">
             {Array.from({ length: rows }).map((_, row) => (
-              <div key={row} className={cn("grid grid-cols-7 gap-1", row === 0 || row === rows - 1 ? "bg-green-400/10" : "bg-slate-900/50")}>
+              <div key={row} className={cn("relative grid grid-cols-7 gap-1 overflow-hidden", row === 0 || row === rows - 1 ? "bg-green-400/10" : "bg-slate-900/50")}>
                 {Array.from({ length: cols }).map((__, col) => {
                   const player = position.row === row && position.col === col;
-                  const hazard = hazards[row]?.includes(col);
                   return (
                     <div key={`${row}-${col}`} className="grid aspect-square place-items-center rounded-md border border-white/5 bg-white/5">
-                      {player ? <Rabbit className="text-cyan-100" /> : hazard ? <Car className="text-rose-200" /> : null}
+                      {player ? <Rabbit className="relative z-20 text-cyan-100" /> : null}
                     </div>
                   );
                 })}
+                {hazards[row]?.map((carCol, index) => (
+                  <div
+                    key={`${row}-${index}`}
+                    className="pointer-events-none absolute top-1/2 z-10 grid h-[76%] w-[13%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-md border border-rose-200/40 bg-rose-500/25 text-rose-100 shadow-purple transition-[left] duration-100 ease-linear"
+                    style={{ left: `${((wrapPosition(carCol) + 0.5) / cols) * 100}%` }}
+                  >
+                    <Car className={laneSpeeds[row] < 0 ? "rotate-180" : ""} size={22} />
+                  </div>
+                ))}
               </div>
             ))}
           </div>
