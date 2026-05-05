@@ -357,7 +357,7 @@ export default function PlinkoPage() {
 
   return (
     <GameShell eyebrow="Plinko" title="Plinko" description="Tune difficulty and rows, then drop balls into fake-coin multiplier slots.">
-      <div className="grid gap-6 xl:grid-cols-[445px_1fr]">
+      <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(320px,445px)_minmax(0,1fr)]">
         <Card className="space-y-5 bg-[#20284e]/80">
           <div className="flex gap-2">
             <button className="rounded-lg bg-blue-500/15 px-5 py-3 text-sm font-black text-white">Manual</button>
@@ -462,7 +462,7 @@ export default function PlinkoPage() {
           <p className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm leading-6 text-slate-300">{message}</p>
         </Card>
 
-        <Card className="relative min-h-[560px] overflow-hidden bg-[#252e63]/90 p-0">
+        <Card className="relative min-h-[360px] overflow-hidden bg-[#252e63]/90 p-0 sm:min-h-[480px] xl:min-h-[560px]">
           <div className="absolute right-7 top-4 z-20 flex items-center gap-3 text-sm font-bold text-slate-300">
             <button className="grid h-8 w-8 place-items-center rounded-lg bg-white/5">
               <HelpCircle size={15} />
@@ -471,7 +471,7 @@ export default function PlinkoPage() {
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_22%,rgba(59,130,246,.18),transparent_28%),radial-gradient(circle_at_72%_72%,rgba(15,23,42,.55),transparent_34%)]" />
           <div className="absolute inset-0 opacity-50 [clip-path:polygon(0_44%,16%_52%,27%_35%,36%_60%,47%_18%,59%_38%,73%_34%,88%_42%,100%_38%,100%_100%,0_100%)] bg-slate-950/30" />
-          <div ref={boardRef} className="relative z-10 mx-auto aspect-[760/560] h-full max-h-[560px] w-full max-w-[760px] [&_canvas]:h-full [&_canvas]:w-full" />
+          <div ref={boardRef} className="relative z-10 mx-auto aspect-[760/560] w-full max-w-[760px] [&_canvas]:h-full [&_canvas]:w-full" />
         </Card>
       </div>
     </GameShell>

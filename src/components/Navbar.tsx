@@ -31,12 +31,12 @@ export function Navbar() {
           <span className="text-glow-purple text-purple-300">Gamble</span>
         </Link>
 
-        <div className="order-3 flex w-full gap-2 overflow-x-auto md:order-none md:w-auto">
+        <div className="order-3 flex w-full min-w-0 gap-2 overflow-x-auto pb-1 md:order-none md:w-auto md:max-w-[58vw]">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-lg border border-white/10 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:border-cyan-300/50 hover:bg-cyan-300/10 hover:text-white"
+              className="shrink-0 rounded-lg border border-white/10 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:border-cyan-300/50 hover:bg-cyan-300/10 hover:text-white"
             >
               {link.label}
             </Link>

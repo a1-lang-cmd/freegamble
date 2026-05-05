@@ -46,8 +46,8 @@ export default function WheelPage() {
 
   return (
     <GameShell eyebrow="Prize Wheel" title="Spin the Multiplier Wheel" description="A big animated wheel with virtual multiplier segments. Every outcome uses fake coins only.">
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <Card className="relative grid min-h-[460px] place-items-center overflow-hidden">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="relative grid min-h-[390px] place-items-center overflow-hidden sm:min-h-[460px]">
           <div className="absolute left-1/2 top-8 z-20 -translate-x-1/2">
             <div className="h-0 w-0 border-l-[18px] border-r-[18px] border-t-[32px] border-l-transparent border-r-transparent border-t-white drop-shadow-[0_0_14px_rgba(34,211,238,.85)]" />
             <div className="mx-auto -mt-1 h-5 w-2 rounded-full bg-cyan-200 shadow-neon" />
@@ -55,7 +55,7 @@ export default function WheelPage() {
           <motion.div
             animate={{ rotate: rotation }}
             transition={{ duration: 1.4, ease: "easeOut" }}
-            className="relative grid h-80 w-80 place-items-center rounded-full border-4 border-fuchsia-200/50 shadow-purple"
+            className="relative grid h-[min(20rem,calc(100vw-4rem))] w-[min(20rem,calc(100vw-4rem))] place-items-center rounded-full border-4 border-fuchsia-200/50 shadow-purple"
             style={{
               background: `conic-gradient(${segmentColors
                 .map((color, index) => `${color} ${(index / segments.length) * 100}% ${((index + 1) / segments.length) * 100}%`)
@@ -76,7 +76,7 @@ export default function WheelPage() {
                 </span>
               );
             })}
-            <div className="z-10 grid h-32 w-32 place-items-center rounded-full border border-white/20 bg-slate-950 text-fuchsia-100">
+            <div className="z-10 grid h-[40%] w-[40%] place-items-center rounded-full border border-white/20 bg-slate-950 text-fuchsia-100">
               <Orbit size={58} />
             </div>
           </motion.div>

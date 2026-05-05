@@ -339,7 +339,7 @@ export default function CrashPage() {
       title="Rocket Crash Rounds"
       description="Join the next round, watch the multiplier climb for a random amount of time, and cash out before the crash. Fake coins only."
     >
-      <div className="grid gap-6 xl:grid-cols-[445px_1fr]">
+      <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(320px,445px)_minmax(0,1fr)]">
         <div className="space-y-6">
           <Card className="space-y-5 bg-[#20284e]/80">
             <div className="flex gap-2">
@@ -419,8 +419,8 @@ export default function CrashPage() {
           </Card>
         </div>
 
-        <Card className="relative min-h-[610px] overflow-hidden bg-[#252e63]/90 p-0">
-          <div className="absolute left-8 top-5 z-10 flex flex-wrap gap-2">
+        <Card className="relative min-h-[520px] overflow-hidden bg-[#252e63]/90 p-0 sm:min-h-[610px]">
+          <div className="absolute left-4 right-4 top-5 z-10 flex flex-wrap gap-2 sm:left-8 sm:right-auto">
             {recent.map((item, index) => (
               <span
                 key={`${item}-${index}`}
@@ -434,7 +434,7 @@ export default function CrashPage() {
             ))}
           </div>
 
-          <div className="absolute right-8 top-5 z-10 flex items-center gap-8 text-sm font-bold text-slate-300">
+          <div className="absolute right-4 top-5 z-10 hidden items-center gap-8 text-sm font-bold text-slate-300 sm:flex lg:right-8">
             <span className="flex items-center gap-2"><HelpCircle size={16} /> Fairness</span>
             <span className="flex items-center gap-2">Network status <Wifi className="text-cyan-300" size={16} /></span>
           </div>
@@ -442,13 +442,13 @@ export default function CrashPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(168,85,247,.35),transparent_30%),radial-gradient(circle_at_32%_55%,rgba(59,130,246,.28),transparent_28%)]" />
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-slate-950/55 to-transparent" />
 
-          <div className="absolute left-8 top-28 z-10 flex h-[430px] flex-col justify-between text-base font-black text-white/90">
+          <div className="absolute left-4 top-28 z-10 flex h-[340px] flex-col justify-between text-xs font-black text-white/90 sm:left-8 sm:h-[430px] sm:text-base">
             {axisLabels.map((label) => (
               <span key={label}>{label.toFixed(1)}x</span>
             ))}
           </div>
 
-          <div className="absolute bottom-20 left-24 right-10 h-80">
+          <div className="absolute bottom-20 left-12 right-4 h-72 sm:left-24 sm:right-10 sm:h-80">
             <svg className="absolute inset-0 h-full w-full" viewBox="0 0 760 320" aria-hidden="true">
               <defs>
                 <linearGradient id="rocketTrail" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -498,9 +498,9 @@ export default function CrashPage() {
             </motion.div>
           </div>
 
-          <div className="relative z-10 grid min-h-[610px] place-items-center text-center">
+          <div className="relative z-10 grid min-h-[520px] place-items-center text-center sm:min-h-[610px]">
             <div>
-              <p className={cn("text-7xl font-black sm:text-8xl", phase === "crashed" ? "text-rose-200" : "text-white")}>
+              <p className={cn("text-5xl font-black sm:text-8xl", phase === "crashed" ? "text-rose-200" : "text-white")}>
                 {phase === "waiting" ? `${countdown}s` : `${multiplier.toFixed(2)}x`}
               </p>
               <p className="mt-5 text-2xl font-bold text-white">
@@ -509,7 +509,7 @@ export default function CrashPage() {
             </div>
           </div>
 
-          <div className="absolute bottom-6 left-24 right-10 z-10 flex justify-between text-base font-black text-white/90">
+          <div className="absolute bottom-6 left-12 right-4 z-10 flex justify-between text-xs font-black text-white/90 sm:left-24 sm:right-10 sm:text-base">
             {["12s", "15s", "18s", "21s", "24s", "27s", "30s"].map((label) => (
               <span key={label}>{label}</span>
             ))}

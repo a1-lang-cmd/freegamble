@@ -243,12 +243,12 @@ export default function RoulettePage() {
 
   return (
     <GameShell eyebrow="Roulette" title="Neon Roulette Table" description="Pick red, black, or green. Red and black pay 2x; green pays 14x. Fake coins only.">
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <Card className="relative grid min-h-[540px] place-items-center overflow-hidden bg-[#252e63]/90">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="relative grid min-h-[430px] place-items-center overflow-hidden bg-[#252e63]/90 p-4 sm:min-h-[540px]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(34,211,238,.16),transparent_34%),radial-gradient(circle_at_70%_75%,rgba(168,85,247,.18),transparent_30%)]" />
-          <div className="relative z-10 grid h-[430px] w-[430px] place-items-center">
+          <div className="relative z-10 grid aspect-square w-full max-w-[430px] place-items-center">
             <div
-              className="absolute grid h-96 w-96 place-items-center rounded-full border-[10px] border-slate-950/80 shadow-purple"
+              className="absolute grid h-[89%] w-[89%] place-items-center rounded-full border-[10px] border-slate-950/80 shadow-purple"
               style={{
                 transform: `rotate(${rotation}deg)`,
                 background: `conic-gradient(${pockets
@@ -270,8 +270,8 @@ export default function RoulettePage() {
                   </span>
                 );
               })}
-              <div className="grid h-40 w-40 place-items-center rounded-full border-[8px] border-slate-800 bg-slate-950 text-white shadow-xl">
-                <div className="grid h-24 w-24 place-items-center rounded-full border border-cyan-200/30 bg-cyan-300/10">
+              <div className="grid h-[42%] w-[42%] place-items-center rounded-full border-[8px] border-slate-800 bg-slate-950 text-white shadow-xl">
+                <div className="grid h-[60%] w-[60%] place-items-center rounded-full border border-cyan-200/30 bg-cyan-300/10">
                   <CircleDot size={52} />
                 </div>
               </div>

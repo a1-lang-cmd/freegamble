@@ -186,7 +186,7 @@ export default function BlackjackPage() {
 
   return (
     <GameShell eyebrow="Blackjack" title="Neon Blackjack Table" description="Play a free fake-coin blackjack hand. Blackjack pays 3 to 2, dealer stands on 17, and coins have no real-world value.">
-      <div className="grid gap-6 xl:grid-cols-[408px_1fr]">
+      <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(320px,408px)_minmax(0,1fr)]">
         <Card className="space-y-6 bg-[#20284e]/80">
           <div className="flex gap-2">
             <button className="rounded-lg bg-blue-500/15 px-5 py-3 text-sm font-black text-white">Manual</button>
@@ -231,16 +231,16 @@ export default function BlackjackPage() {
           <p className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm leading-6 text-slate-300">{message}</p>
         </Card>
 
-        <Card className="relative min-h-[548px] overflow-hidden bg-[#252e63]/90 p-0">
+        <Card className="relative min-h-[500px] overflow-hidden bg-[#252e63]/90 p-0 sm:min-h-[548px]">
           <div className="absolute right-5 top-4 z-20 flex items-center gap-2">
             <button className="grid h-9 w-9 place-items-center rounded-lg bg-white/5 text-slate-200"><Volume2 size={16} /></button>
             <button className="grid h-9 w-9 place-items-center rounded-lg bg-white/5 text-slate-200"><HelpCircle size={16} /></button>
             <button className="rounded-lg bg-white/5 px-4 py-2 text-sm font-bold text-slate-300">History</button>
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-18%,rgba(15,23,42,.72)_0_45%,transparent_46%),radial-gradient(circle_at_50%_35%,rgba(59,130,246,.18),transparent_36%)]" />
-          <div className="absolute left-1/2 top-1/2 h-[620px] w-[920px] -translate-x-1/2 -translate-y-[68%] rounded-full border-[22px] border-slate-950/30" />
+          <div className="absolute left-1/2 top-1/2 h-[min(620px,90vw)] w-[min(920px,135vw)] -translate-x-1/2 -translate-y-[68%] rounded-full border-[22px] border-slate-950/30" />
           <div className="absolute left-1/2 top-[35%] z-10 -translate-x-1/2 text-center">
-            <div className="rounded-md bg-blue-500/15 px-20 py-3 text-sm font-black uppercase tracking-wide text-slate-200 shadow-purple">Blackjack pays 3 to 2</div>
+            <div className="rounded-md bg-blue-500/15 px-6 py-3 text-xs font-black uppercase tracking-wide text-slate-200 shadow-purple sm:px-20 sm:text-sm">Blackjack pays 3 to 2</div>
             <p className="mt-3 text-sm font-bold uppercase tracking-wide text-slate-400">Insurance pays 2 to 1</p>
           </div>
 
