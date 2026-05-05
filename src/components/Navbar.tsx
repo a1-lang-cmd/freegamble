@@ -35,6 +35,7 @@ const links = [
   { href: "/colorpick", label: "Color Pick" },
   { href: "/laser", label: "Laser" },
   { href: "/racer", label: "Racer" },
+  { href: "/roadhop", label: "Road Hop" },
   { href: "/leaderboard", label: "Leaderboard" }
 ];
 

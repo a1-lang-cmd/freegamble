@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Archive, ArrowUpDown, Bomb, Circle, CircleDot, Club, Coins, Crosshair, Diamond, Dices, Eraser, Flame, Flag, Gem, Goal, Grid3X3, Hand, Landmark, Orbit, Package, Palette, RadioTower, Rows3, SlidersHorizontal, Sparkles, TrendingUp, Trophy, Waves, Worm } from "lucide-react";
+import { Archive, ArrowUpDown, Bomb, Car, Circle, CircleDot, Club, Coins, Crosshair, Diamond, Dices, Eraser, Flame, Flag, Gem, Goal, Grid3X3, Hand, Landmark, Orbit, Package, Palette, RadioTower, Rows3, SlidersHorizontal, Sparkles, TrendingUp, Trophy, Waves, Worm } from "lucide-react";
 import { DailyReward } from "@/components/DailyReward";
 import { FakeValueNotice } from "@/components/FakeValueNotice";
 import { Card } from "@/components/ui/Card";
@@ -228,6 +228,14 @@ const games = [
     icon: Flag,
     color: "text-green-200",
     glow: "hover:shadow-green"
+  },
+  {
+    href: "/roadhop",
+    title: "Road Hop",
+    description: "Hop lanes, dodge traffic, and cash out before getting hit.",
+    icon: Car,
+    color: "text-cyan-200",
+    glow: "hover:shadow-neon"
   },
   {
     href: "/leaderboard",
