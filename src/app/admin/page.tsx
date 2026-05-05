@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LogOut, ShieldAlert, Trash2 } from "lucide-react";
+import { LogOut, RefreshCcw, Search, ShieldAlert, Trash2, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -20,6 +20,14 @@ import {
 } from "@/lib/coins";
 import { useCoins } from "@/hooks/useCoins";
 
+type AdminProfile = {
+  id: string;
+  email: string;
+  username: string;
+  coins: number;
+  updated_at?: string;
+};
+
 export default function AdminPage() {
   const { balance, refreshBalance } = useCoins();
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,6 +37,9 @@ export default function AdminPage() {
   const [coinAmount, setCoinAmount] = useState(1000);
   const [dailyAmount, setDailyAmount] = useState(350);
   const [startingAmount, setStartingAmount] = useState(DEFAULT_STARTING_BALANCE);
+  const [profiles, setProfiles] = useState<AdminProfile[]>([]);
+  const [profileSearch, setProfileSearch] = useState("");
+  const [loadingProfiles, setLoadingProfiles] = useState(false);
   const [message, setMessage] = useState("Admin controls affect only this browser's fake local data.");
 
   useEffect(() => {
@@ -40,6 +51,9 @@ export default function AdminPage() {
       .then((data: { configured: boolean; loggedIn: boolean }) => {
         setAdminConfigured(data.configured);
         setLoggedIn(data.loggedIn);
+        if (data.loggedIn) {
+          loadProfiles();
+        }
         if (!data.configured) {
           setMessage("Admin key is not configured yet. Add FREEGAMBLE_ADMIN_KEY in Vercel.");
         }
@@ -63,12 +77,28 @@ export default function AdminPage() {
     setLoggedIn(true);
     setPasswordInput("");
     setMessage("Admin session unlocked with the server key.");
+    loadProfiles();
   };
 
   const logout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
     setLoggedIn(false);
     setMessage("Admin session locked.");
+  };
+
+  const loadProfiles = async () => {
+    setLoadingProfiles(true);
+    const response = await fetch("/api/admin/profiles");
+    const data = (await response.json().catch(() => null)) as { profiles?: AdminProfile[]; message?: string } | null;
+    setLoadingProfiles(false);
+
+    if (!response.ok) {
+      setMessage(data?.message ?? "Could not load accounts.");
+      return;
+    }
+
+    setProfiles(data?.profiles ?? []);
+    setMessage(`Loaded ${(data?.profiles ?? []).length.toLocaleString()} public account profile${data?.profiles?.length === 1 ? "" : "s"}.`);
   };
 
   const applySetBalance = () => {
@@ -101,6 +131,12 @@ export default function AdminPage() {
     setDailyRewardAmount(dailyAmount);
     setMessage(`Daily reward changed to ${Math.max(1, Math.floor(dailyAmount)).toLocaleString()} fake coins.`);
   };
+
+  const filteredProfiles = profiles.filter((profile) => {
+    const query = profileSearch.trim().toLowerCase();
+    if (!query) return true;
+    return profile.username.toLowerCase().includes(query) || profile.email.toLowerCase().includes(query) || profile.id.toLowerCase().includes(query);
+  });
 
   return (
     <div className="space-y-6">
@@ -144,10 +180,14 @@ export default function AdminPage() {
         </Card>
       ) : (
         <div className="grid gap-5 lg:grid-cols-2">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 flex flex-wrap gap-3">
             <Button onClick={logout} variant="ghost">
               <LogOut size={18} />
               Lock Admin
+            </Button>
+            <Button onClick={loadProfiles} variant="secondary" disabled={loadingProfiles}>
+              <RefreshCcw size={18} />
+              {loadingProfiles ? "Loading Accounts" : "Refresh Accounts"}
             </Button>
           </div>
           <Card className="space-y-4 border-purple-300/25">
@@ -224,6 +264,61 @@ export default function AdminPage() {
               Reset Local User Data
             </Button>
             <p className="rounded-lg border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-300">{message}</p>
+          </Card>
+
+          <Card className="space-y-4 border-cyan-300/25 lg:col-span-2">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-cyan-100">
+                  <Users size={22} />
+                  <h2 className="text-2xl font-black text-white">Public Accounts</h2>
+                </div>
+                <p className="mt-2 text-sm text-slate-400">View logged-in player profiles, emails, and fake coin balances.</p>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2">
+                <Search size={16} className="text-slate-400" />
+                <input
+                  value={profileSearch}
+                  onChange={(event) => setProfileSearch(event.target.value)}
+                  placeholder="Search accounts"
+                  className="min-w-0 bg-transparent text-sm font-bold text-white outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-lg border border-white/10">
+              <table className="w-full min-w-[720px] text-left text-sm">
+                <thead className="bg-white/5 text-xs uppercase tracking-[0.16em] text-slate-400">
+                  <tr>
+                    <th className="px-4 py-3">Username</th>
+                    <th className="px-4 py-3">Email</th>
+                    <th className="px-4 py-3">Fake Coins</th>
+                    <th className="px-4 py-3">Updated</th>
+                    <th className="px-4 py-3">User ID</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/10">
+                  {filteredProfiles.map((profile) => (
+                    <tr key={profile.id} className="bg-slate-950/20">
+                      <td className="px-4 py-3 font-black text-white">{profile.username}</td>
+                      <td className="px-4 py-3 text-slate-300">{profile.email}</td>
+                      <td className="px-4 py-3 font-black text-green-100">{profile.coins.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-slate-400">
+                        {profile.updated_at ? new Date(profile.updated_at).toLocaleString() : "Never"}
+                      </td>
+                      <td className="px-4 py-3 font-mono text-xs text-slate-500">{profile.id}</td>
+                    </tr>
+                  ))}
+                  {filteredProfiles.length === 0 && (
+                    <tr>
+                      <td className="px-4 py-8 text-center text-slate-400" colSpan={5}>
+                        No account profiles found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </Card>
         </div>
       )}
