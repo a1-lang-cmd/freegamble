@@ -23,26 +23,33 @@ type Player = {
 const fakeNames = ["FxllinqKid", "qgtmvicc", "Kunotori", "szep2", "kksooskminha", "NeonNova", "MintRush", "CyanStack", "LuckyLoop", "DemoDealer", "VelvetVolt", "PixelPulse"];
 const recentSeed = [1.79, 1.03, 2.34, 1.21, 1.93, 7.21, 3.48];
 const joinWindowMs = 7000;
+const maxRoundDurationMs = 30000;
 
-const multiplierAt = (elapsedMs: number) => {
-  const seconds = elapsedMs / 1000;
-  return Number((1 + seconds * 0.19 + Math.pow(seconds, 1.42) * 0.075).toFixed(2));
+const multiplierAt = (elapsedMs: number, durationMs: number, targetMultiplier: number) => {
+  const progress = Math.min(1, Math.max(0, elapsedMs / durationMs));
+  const easedProgress = Math.pow(progress, targetMultiplier >= 100 ? 1.08 : 1.18);
+  const value = Math.exp(Math.log(targetMultiplier) * easedProgress);
+  return Number(Math.min(targetMultiplier, Math.max(1, value)).toFixed(value >= 100 ? 0 : 2));
 };
 
 function durationForMultiplier(targetMultiplier: number) {
-  let low = 0;
-  let high = 120000;
-
-  for (let step = 0; step < 32; step += 1) {
-    const mid = (low + high) / 2;
-    if (multiplierAt(mid) < targetMultiplier) {
-      low = mid;
-    } else {
-      high = mid;
-    }
+  if (targetMultiplier < 2.5) {
+    return 3500 + Math.random() * 3500;
   }
 
-  return high;
+  if (targetMultiplier < 10) {
+    return 7000 + Math.random() * 5500;
+  }
+
+  if (targetMultiplier < 100) {
+    return 12500 + Math.random() * 8500;
+  }
+
+  if (targetMultiplier < 1000) {
+    return 21000 + Math.random() * 5500;
+  }
+
+  return 26500 + Math.random() * 3500;
 }
 
 function rollCrashMultiplier(players: Player[]) {
@@ -220,7 +227,7 @@ export default function CrashPage() {
   const launchRound = () => {
     clearTimers();
     const point = rollCrashMultiplier(targetPlayersRef.current);
-    const duration = durationForMultiplier(point);
+    const duration = Math.min(maxRoundDurationMs, durationForMultiplier(point));
     roundDurationRef.current = duration;
     roundStartRef.current = Date.now();
     setCrashPoint(point);
@@ -238,7 +245,7 @@ export default function CrashPage() {
 
     timerRef.current = setInterval(() => {
       const elapsed = Date.now() - roundStartRef.current;
-      setMultiplier(multiplierAt(Math.min(elapsed, roundDurationRef.current)));
+      setMultiplier(multiplierAt(Math.min(elapsed, roundDurationRef.current), roundDurationRef.current, point));
     }, 80);
 
     timeoutRef.current = setTimeout(() => {
