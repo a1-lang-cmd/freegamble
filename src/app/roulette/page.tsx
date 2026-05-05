@@ -79,6 +79,9 @@ export default function RoulettePage() {
         pixelRatio: window.devicePixelRatio
       }
     });
+    render.canvas.style.display = "block";
+    render.canvas.style.width = "100%";
+    render.canvas.style.height = "100%";
     const runner = Matter.Runner.create();
 
     const bodies = deflectors.map((angle) => {
@@ -88,9 +91,7 @@ export default function RoulettePage() {
         restitution: 1.08,
         friction: 0,
         render: {
-          fillStyle: "rgba(255,255,255,.86)",
-          strokeStyle: "rgba(34,211,238,.65)",
-          lineWidth: 2
+          visible: false
         }
       });
     });
@@ -186,7 +187,7 @@ export default function RoulettePage() {
     physics.pick = pick;
     setResult(null);
     setSpinning(true);
-    setMessage("Ball is live. It will bounce off the pins and settle into a pocket.");
+    setMessage("Ball is live. It will bounce and settle into a pocket.");
 
     let lastTime = performance.now();
     const tick = (time: number) => {
@@ -246,7 +247,7 @@ export default function RoulettePage() {
       <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
         <Card className="relative flex min-h-[390px] flex-col items-center justify-center overflow-hidden bg-[#252e63]/90 p-3 sm:min-h-[540px] sm:p-4">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(34,211,238,.16),transparent_34%),radial-gradient(circle_at_70%_75%,rgba(168,85,247,.18),transparent_30%)]" />
-          <div className="relative z-10 grid aspect-square w-[min(100%,430px,calc(100dvh-280px))] min-w-[260px] place-items-center">
+          <div className="relative z-10 grid aspect-square w-[min(100%,430px,calc(100dvh-280px))] place-items-center">
             <div
               className="absolute inset-[5.5%] grid place-items-center rounded-full border-[clamp(6px,2vw,10px)] border-slate-950/80 shadow-purple"
               style={{
@@ -283,7 +284,7 @@ export default function RoulettePage() {
             <p className="text-xl font-black text-white sm:text-2xl">
               {result ? `${result.number} ${result.color.toUpperCase()}` : "Ready to spin"}
             </p>
-            <p className="mt-2 max-w-sm text-xs font-bold text-slate-400 sm:text-sm">The ball collides with pins and settles into the pocket ring.</p>
+            <p className="mt-2 max-w-sm text-xs font-bold text-slate-400 sm:text-sm">The ball bounces and settles into the pocket ring.</p>
           </div>
         </Card>
 

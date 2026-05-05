@@ -90,6 +90,9 @@ export default function PlinkoPage() {
         pixelRatio: window.devicePixelRatio
       }
     });
+    render.canvas.style.display = "block";
+    render.canvas.style.width = "100%";
+    render.canvas.style.height = "100%";
 
     const runner = Matter.Runner.create();
     const bodies: Matter.Body[] = [];
@@ -473,7 +476,7 @@ export default function PlinkoPage() {
           <div className="absolute inset-0 opacity-50 [clip-path:polygon(0_44%,16%_52%,27%_35%,36%_60%,47%_18%,59%_38%,73%_34%,88%_42%,100%_38%,100%_100%,0_100%)] bg-slate-950/30" />
           <div
             ref={boardRef}
-            className="relative z-10 mx-auto aspect-[760/560] w-[min(100%,760px)] min-w-[260px] max-w-[760px] [&_canvas]:block [&_canvas]:h-full [&_canvas]:w-full"
+            className="relative z-10 mx-auto aspect-[760/560] w-full max-w-[760px] overflow-hidden [&_canvas]:block [&_canvas]:h-full [&_canvas]:w-full"
           />
         </Card>
       </div>
