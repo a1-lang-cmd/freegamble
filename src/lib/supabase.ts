@@ -165,13 +165,18 @@ export async function ensureProfile(username: string) {
     headers: { ...authHeaders(session.access_token), Prefer: "return=representation" },
     body: JSON.stringify(profile)
   });
-  const created = (await createResponse.json()) as AuthProfile[];
+  const created = await createResponse.json();
   if (!createResponse.ok) {
-    throw new Error("Could not create profile. Try another username.");
+    const message =
+      created?.message ??
+      created?.details ??
+      created?.hint ??
+      "Could not create profile. Make sure the Supabase profiles table SQL was run.";
+    throw new Error(message);
   }
 
-  saveProfile(created[0]);
-  return created[0];
+  saveProfile(created[0] as AuthProfile);
+  return created[0] as AuthProfile;
 }
 
 export async function updateRemoteCoins(coins: number) {

@@ -1,10 +1,13 @@
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null,
-  username text not null unique,
+  username text not null,
   coins integer not null default 1000 check (coins >= 0),
   updated_at timestamptz not null default now()
 );
+
+alter table public.profiles
+  drop constraint if exists profiles_username_key;
 
 alter table public.profiles enable row level security;
 
