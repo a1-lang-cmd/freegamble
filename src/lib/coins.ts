@@ -4,7 +4,6 @@ export const BALANCE_KEY = "freegamble.balance";
 export const DAILY_CLAIM_KEY = "freegamble.lastDailyClaim";
 export const STARTING_BALANCE_KEY = "freegamble.startingBalance";
 export const DAILY_REWARD_AMOUNT_KEY = "freegamble.dailyRewardAmount";
-export const ADMIN_SESSION_KEY = "freegamble.adminSession";
 
 const listeners = new Set<(balance: number) => void>();
 

@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ShieldAlert, Trash2 } from "lucide-react";
+import { LogOut, ShieldAlert, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import {
-  ADMIN_SESSION_KEY,
   addCoins,
   DEFAULT_STARTING_BALANCE,
   getBalance,
@@ -21,11 +20,10 @@ import {
 } from "@/lib/coins";
 import { useCoins } from "@/hooks/useCoins";
 
-const password = "admin123";
-
 export default function AdminPage() {
   const { balance, refreshBalance } = useCoins();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [adminConfigured, setAdminConfigured] = useState(true);
   const [passwordInput, setPasswordInput] = useState("");
   const [manualBalance, setManualBalance] = useState(1000);
   const [coinAmount, setCoinAmount] = useState(1000);
@@ -34,21 +32,43 @@ export default function AdminPage() {
   const [message, setMessage] = useState("Admin controls affect only this browser's fake local data.");
 
   useEffect(() => {
-    setLoggedIn(window.localStorage.getItem(ADMIN_SESSION_KEY) === "true");
     setManualBalance(getBalance());
     setDailyAmount(getDailyRewardAmount());
     setStartingAmount(getStartingBalance());
+    fetch("/api/admin/session")
+      .then((response) => response.json())
+      .then((data: { configured: boolean; loggedIn: boolean }) => {
+        setAdminConfigured(data.configured);
+        setLoggedIn(data.loggedIn);
+        if (!data.configured) {
+          setMessage("Admin key is not configured yet. Add FREEGAMBLE_ADMIN_KEY in Vercel.");
+        }
+      })
+      .catch(() => setMessage("Could not check admin session."));
   }, []);
 
-  const login = () => {
-    if (passwordInput !== password) {
-      setMessage("Incorrect admin password.");
+  const login = async () => {
+    const response = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: passwordInput })
+    });
+    const data = (await response.json().catch(() => null)) as { message?: string } | null;
+
+    if (!response.ok) {
+      setMessage(data?.message ?? "Incorrect admin key.");
       return;
     }
 
-    window.localStorage.setItem(ADMIN_SESSION_KEY, "true");
     setLoggedIn(true);
-    setMessage("Admin session unlocked locally.");
+    setPasswordInput("");
+    setMessage("Admin session unlocked with the server key.");
+  };
+
+  const logout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    setLoggedIn(false);
+    setMessage("Admin session locked.");
   };
 
   const applySetBalance = () => {
@@ -103,7 +123,12 @@ export default function AdminPage() {
             <ShieldAlert />
           </div>
           <h2 className="text-2xl font-black text-white">Admin Login</h2>
-          <p className="mt-2 text-sm text-slate-300">Enter the local admin password to unlock tools.</p>
+          <p className="mt-2 text-sm text-slate-300">Enter your private server admin key to unlock tools.</p>
+          {!adminConfigured && (
+            <p className="mt-4 rounded-lg border border-amber-300/30 bg-amber-300/10 p-3 text-sm font-bold text-amber-100">
+              Add FREEGAMBLE_ADMIN_KEY in Vercel before this login works.
+            </p>
+          )}
           <input
             type="password"
             value={passwordInput}
@@ -112,13 +137,19 @@ export default function AdminPage() {
             className="mt-5 w-full rounded-lg border border-slate-600 bg-slate-950/70 px-4 py-3 text-white outline-none transition focus:border-rose-300"
             placeholder="Password"
           />
-          <Button onClick={login} variant="danger" className="mt-4 w-full">
+          <Button onClick={login} disabled={!adminConfigured} variant="danger" className="mt-4 w-full">
             Unlock Admin
           </Button>
           <p className="mt-4 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-slate-300">{message}</p>
         </Card>
       ) : (
         <div className="grid gap-5 lg:grid-cols-2">
+          <div className="lg:col-span-2">
+            <Button onClick={logout} variant="ghost">
+              <LogOut size={18} />
+              Lock Admin
+            </Button>
+          </div>
           <Card className="space-y-4 border-purple-300/25">
             <h2 className="text-2xl font-black text-white">Balance Controls</h2>
             <motion.div animate={{ boxShadow: "0 0 28px rgba(168,85,247,.2)" }} className="rounded-lg border border-purple-300/30 bg-purple-500/10 p-4">
