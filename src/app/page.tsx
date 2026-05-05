@@ -97,14 +97,14 @@ const games = [
 
 export default function HomePage() {
   return (
-    <div className="space-y-8">
-      <section className="grid gap-6 py-6 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
-        <div>
+    <div className="min-w-0 space-y-8">
+      <section className="grid min-w-0 gap-6 py-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,.9fr)] lg:items-end">
+        <div className="min-w-0">
           <p className="mb-3 text-sm font-black uppercase tracking-[0.24em] text-cyan-200">Fake coins. Real polish.</p>
-          <h1 className="max-w-3xl text-4xl font-black leading-tight text-white sm:text-6xl">
+          <h1 className="max-w-3xl text-3xl font-black leading-tight text-white sm:text-6xl">
             Neon casino games built for free social play.
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
             Play Crash, Mines, and Cases with a persistent fake balance. Every coin is virtual, free, and locked inside this browser.
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function HomePage() {
 
       <DailyReward />
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {games.map((game) => {
           const Icon = game.icon;
           return (
@@ -122,7 +122,7 @@ export default function HomePage() {
                 <div className={`mb-8 grid h-14 w-14 place-items-center rounded-lg border border-white/10 bg-white/5 ${game.color}`}>
                   <Icon size={30} />
                 </div>
-                <h2 className="text-2xl font-black text-white transition group-hover:text-cyan-100">{game.title}</h2>
+                <h2 className="break-words text-xl font-black text-white transition group-hover:text-cyan-100 sm:text-2xl">{game.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{game.description}</p>
               </Card>
             </Link>

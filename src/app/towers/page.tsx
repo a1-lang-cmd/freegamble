@@ -81,11 +81,11 @@ export default function TowersPage() {
 
   return (
     <GameShell eyebrow="Towers" title="Climb the Neon Tower" description="Pick one safe tile per row. The tower gets richer as you climb, but a wrong tile loses the fake bet.">
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <Card>
-          <div className="mx-auto flex max-w-md flex-col-reverse gap-3">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="overflow-hidden">
+          <div className="mx-auto flex w-full max-w-md flex-col-reverse gap-2 sm:gap-3">
             {Array.from({ length: rows }).map((_, rowIndex) => (
-              <div key={rowIndex} className="grid grid-cols-3 gap-3">
+              <div key={rowIndex} className="grid grid-cols-3 gap-2 sm:gap-3">
                 {Array.from({ length: columns }).map((__, columnIndex) => {
                   const chosen = picked[rowIndex] === columnIndex;
                   const revealLoss = state === "lost" && picked[rowIndex] !== null;
@@ -96,7 +96,7 @@ export default function TowersPage() {
                       whileHover={{ y: state === "active" && rowIndex === currentRow ? -2 : 0 }}
                       onClick={() => pickTile(rowIndex, columnIndex)}
                       className={cn(
-                        "aspect-[1.8] rounded-lg border transition",
+                        "aspect-[1.55] rounded-lg border transition sm:aspect-[1.8]",
                         rowIndex === currentRow && state === "active" ? "border-cyan-300/60 bg-cyan-400/15 shadow-neon" : "border-white/10 bg-white/5",
                         chosen && safe && "border-green-300/60 bg-green-400/20 text-green-100 shadow-green",
                         ((chosen && !safe) || (revealLoss && safe)) && "border-rose-300/60 bg-rose-500/20 text-rose-100"
@@ -114,13 +114,13 @@ export default function TowersPage() {
         </Card>
         <Card className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+            <div className="rounded-lg border border-white/10 bg-white/5 p-3 sm:p-4">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Level</p>
-              <p className="mt-2 text-3xl font-black text-white">{currentRow}/{rows}</p>
+              <p className="mt-2 text-2xl font-black text-white sm:text-3xl">{currentRow}/{rows}</p>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+            <div className="rounded-lg border border-white/10 bg-white/5 p-3 sm:p-4">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Multiplier</p>
-              <p className="mt-2 text-3xl font-black text-cyan-100">{multiplier.toFixed(2)}x</p>
+              <p className="mt-2 text-2xl font-black text-cyan-100 sm:text-3xl">{multiplier.toFixed(2)}x</p>
             </div>
           </div>
           <input type="number" min={1} value={bet} disabled={state === "active"} onChange={(event) => setBet(Math.max(1, Number(event.target.value) || 1))} className="w-full rounded-lg border border-slate-600 bg-slate-950/70 px-4 py-3 font-black text-white outline-none focus:border-cyan-300" />

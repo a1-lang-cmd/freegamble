@@ -82,9 +82,9 @@ export default function MinesPage() {
       title="Pick the Safe Tiles"
       description="A 5x5 grid hides five bombs. Safe reveals grow the multiplier; cash out whenever the board feels hot enough."
     >
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <Card>
-          <div className="grid grid-cols-5 gap-3">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="overflow-hidden">
+          <div className="mx-auto grid w-full max-w-[560px] grid-cols-5 gap-1.5 sm:gap-3">
             {revealed.map((tile, index) => (
               <motion.button
                 key={index}
@@ -92,7 +92,7 @@ export default function MinesPage() {
                 whileTap={{ scale: state === "active" && tile === "hidden" ? 0.96 : 1 }}
                 onClick={() => revealTile(index)}
                 className={cn(
-                  "aspect-square rounded-lg border text-2xl transition",
+                  "aspect-square rounded-lg border text-lg transition sm:text-2xl",
                   tile === "hidden" && "border-slate-600 bg-slate-900/80 hover:border-purple-300/70 hover:bg-purple-400/15",
                   tile === "safe" && "border-green-300/60 bg-green-400/20 text-green-100 shadow-green",
                   tile === "bomb" && "border-rose-300/70 bg-rose-500/20 text-rose-100"
@@ -108,13 +108,13 @@ export default function MinesPage() {
 
         <Card className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+            <div className="rounded-lg border border-white/10 bg-white/5 p-3 sm:p-4">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Multiplier</p>
-              <p className="mt-2 text-3xl font-black text-cyan-100 text-glow-cyan">{multiplier.toFixed(2)}x</p>
+              <p className="mt-2 text-2xl font-black text-cyan-100 text-glow-cyan sm:text-3xl">{multiplier.toFixed(2)}x</p>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+            <div className="rounded-lg border border-white/10 bg-white/5 p-3 sm:p-4">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Cashout</p>
-              <p className="mt-2 text-3xl font-black text-green-100">{payout}</p>
+              <p className="mt-2 break-words text-2xl font-black text-green-100 sm:text-3xl">{payout}</p>
             </div>
           </div>
           <label className="block text-sm font-bold text-slate-300" htmlFor="mines-bet">

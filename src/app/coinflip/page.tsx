@@ -47,12 +47,12 @@ export default function CoinflipPage() {
 
   return (
     <GameShell eyebrow="Coinflip" title="Heads or Tails" description="A fast fake-coin flip with clean 2x social casino payouts.">
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <Card className="grid min-h-[420px] place-items-center">
-          <motion.div animate={{ rotateY: spin }} transition={{ duration: 0.9, ease: "easeOut" }} className="grid h-56 w-56 place-items-center rounded-full border-4 border-amber-200/50 bg-amber-300/15 text-amber-100 shadow-purple">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="grid min-h-[340px] place-items-center sm:min-h-[420px]">
+          <motion.div animate={{ rotateY: spin }} transition={{ duration: 0.9, ease: "easeOut" }} className="grid h-[min(14rem,calc(100vw-5rem))] w-[min(14rem,calc(100vw-5rem))] place-items-center rounded-full border-4 border-amber-200/50 bg-amber-300/15 text-amber-100 shadow-purple">
             <div className="text-center">
               <Coins className="mx-auto mb-3" size={64} />
-              <p className="text-3xl font-black">{result ? result.toUpperCase() : "FLIP"}</p>
+              <p className="text-2xl font-black sm:text-3xl">{result ? result.toUpperCase() : "FLIP"}</p>
             </div>
           </motion.div>
         </Card>

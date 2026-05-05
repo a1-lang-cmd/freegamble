@@ -58,18 +58,18 @@ export default function CasesPage() {
       title="Open Neon Cases"
       description="Cases cost fake coins and reveal weighted virtual rewards: Common 60%, Rare 30%, Legendary 10%."
     >
-      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
-        <Card className="grid min-h-[420px] place-items-center overflow-hidden">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="grid min-h-[340px] place-items-center overflow-hidden sm:min-h-[420px]">
           <motion.div
             animate={opening ? { rotate: [0, 8, -8, 0], scale: [1, 1.08, 1] } : { rotate: 0, scale: 1 }}
             transition={{ duration: 0.35, repeat: opening ? Infinity : 0 }}
             className="text-center"
           >
-            <div className="mx-auto grid h-36 w-36 place-items-center rounded-lg border border-purple-300/50 bg-purple-500/15 text-purple-100 shadow-purple">
+            <div className="mx-auto grid h-28 w-28 place-items-center rounded-lg border border-purple-300/50 bg-purple-500/15 text-purple-100 shadow-purple sm:h-36 sm:w-36">
               {reward ? <Sparkles size={72} /> : <Box size={72} />}
             </div>
             <motion.div key={reward?.tier ?? "empty"} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-              <p className={`mt-8 text-5xl font-black ${reward?.color ?? "text-slate-200"}`}>
+              <p className={`mt-8 text-3xl font-black sm:text-5xl ${reward?.color ?? "text-slate-200"}`}>
                 {opening ? "Rolling..." : reward ? reward.tier : "Mystery Case"}
               </p>
               <p className="mt-3 text-lg font-bold text-slate-300">

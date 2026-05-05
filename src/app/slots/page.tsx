@@ -205,14 +205,14 @@ export default function SlotsPage() {
   return (
     <GameShell eyebrow="Slots" title={selectedMachine ? machine.title : "Slot Machine Lobby"} description="Choose a free social slot machine. Every spin uses fake coins only, with no real-world value.">
       {!selectedMachine ? (
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {machines.map((slotMachine) => (
             <button key={slotMachine.id} onClick={() => openMachine(slotMachine)} className="group text-left">
               <Card className={cn("h-full overflow-hidden bg-gradient-to-br transition duration-300 hover:-translate-y-1 hover:shadow-purple", slotMachine.panel)}>
                 <div className="mb-8 grid h-14 w-14 place-items-center rounded-lg border border-white/10 bg-white/10 text-white">
                   <Gem />
                 </div>
-                <h2 className={cn("text-2xl font-black", slotMachine.accent)}>{slotMachine.title}</h2>
+                <h2 className={cn("break-words text-xl font-black sm:text-2xl", slotMachine.accent)}>{slotMachine.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{slotMachine.tagline}</p>
                 <p className="mt-6 text-sm font-black text-cyan-100 transition group-hover:text-white">Open machine</p>
               </Card>
@@ -233,12 +233,12 @@ export default function SlotsPage() {
             Slot selection
           </button>
 
-          <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
             <Card className={cn("relative overflow-hidden bg-gradient-to-br", machine.panel)}>
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(168,85,247,.24),transparent_34%),radial-gradient(circle_at_70%_80%,rgba(34,211,238,.16),transparent_30%)]" />
               <div className="relative z-10 grid gap-3">
                 {grid.map((row, rowIndex) => (
-                  <div key={rowIndex} className="grid grid-cols-5 gap-3">
+                  <div key={rowIndex} className="grid grid-cols-5 gap-1.5 sm:gap-3">
                     {row.map((symbol, reelIndex) => {
                       const winning = winningCells.has(`${rowIndex}-${reelIndex}`);
                       return (
@@ -248,7 +248,7 @@ export default function SlotsPage() {
                           animate={{ y: 0, opacity: 1, scale: winning ? [1, 1.08, 1] : 1 }}
                           transition={{ duration: 0.22, repeat: winning ? Infinity : 0, repeatDelay: 0.65 }}
                           className={cn(
-                            "grid aspect-square place-items-center rounded-lg border bg-slate-950/70 px-1 text-center text-lg font-black sm:text-2xl",
+                            "grid aspect-square min-h-0 place-items-center rounded-lg border bg-slate-950/70 px-1 text-center text-base font-black sm:text-2xl",
                             symbol.glow,
                             winning ? "border-green-200 bg-green-400/15 shadow-green" : "border-white/10"
                           )}
