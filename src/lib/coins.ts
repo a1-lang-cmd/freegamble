@@ -34,6 +34,9 @@ export function setBalance(balance: number) {
   const normalized = Math.max(0, Math.floor(balance));
   window.localStorage.setItem(BALANCE_KEY, String(normalized));
   listeners.forEach((listener) => listener(normalized));
+  import("@/lib/supabase")
+    .then(({ updateRemoteCoins }) => updateRemoteCoins(normalized))
+    .catch(() => undefined);
 }
 
 export function addCoins(amount: number) {

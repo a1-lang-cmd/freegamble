@@ -58,12 +58,13 @@ export function Navbar() {
             <Coins size={18} />
             {balance.toLocaleString()}
           </motion.div>
-          <button
+          <Link
+            href="/login"
             className="grid h-10 w-10 place-items-center rounded-lg border border-purple-300/40 bg-purple-500/10 text-purple-100 transition hover:bg-purple-500/20"
             aria-label="Profile"
           >
             <UserCircle size={22} />
-          </button>
+          </Link>
         </div>
       </nav>
     </header>
