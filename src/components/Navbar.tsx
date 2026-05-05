@@ -21,6 +21,10 @@ const links = [
   { href: "/limbo", label: "Limbo" },
   { href: "/keno", label: "Keno" },
   { href: "/hilo", label: "Hi-Lo" },
+  { href: "/scratch", label: "Scratch" },
+  { href: "/baccarat", label: "Baccarat" },
+  { href: "/videopoker", label: "Video Poker" },
+  { href: "/goalrush", label: "Goal Rush" },
   { href: "/leaderboard", label: "Leaderboard" }
 ];
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpDown, Bomb, CircleDot, Coins, Dices, Gem, Grid3X3, Hand, Orbit, RadioTower, Rows3, Sparkles, TrendingUp, Trophy, Waves } from "lucide-react";
+import { ArrowUpDown, Bomb, CircleDot, Club, Coins, Dices, Eraser, Gem, Goal, Grid3X3, Hand, Landmark, Orbit, RadioTower, Rows3, Sparkles, TrendingUp, Trophy, Waves } from "lucide-react";
 import { DailyReward } from "@/components/DailyReward";
 import { FakeValueNotice } from "@/components/FakeValueNotice";
 import { Card } from "@/components/ui/Card";
@@ -116,6 +116,38 @@ const games = [
     icon: ArrowUpDown,
     color: "text-amber-200",
     glow: "hover:shadow-purple"
+  },
+  {
+    href: "/scratch",
+    title: "Scratchers",
+    description: "Reveal a neon scratch card and chase the best hidden multiplier.",
+    icon: Eraser,
+    color: "text-cyan-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/baccarat",
+    title: "Baccarat",
+    description: "Pick Player, Banker, or Tie in a quick fake-coin table deal.",
+    icon: Landmark,
+    color: "text-purple-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/videopoker",
+    title: "Video Poker",
+    description: "Hold cards and draw for simple fake-coin poker payouts.",
+    icon: Club,
+    color: "text-blue-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/goalrush",
+    title: "Goal Rush",
+    description: "Pick a penalty lane and beat the keeper for a fast 2x.",
+    icon: Goal,
+    color: "text-green-200",
+    glow: "hover:shadow-green"
   },
   {
     href: "/leaderboard",
