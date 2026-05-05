@@ -139,11 +139,11 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <section className="grid gap-5 lg:grid-cols-[1fr_420px] lg:items-end">
-        <div>
+    <div className="min-w-0 space-y-6">
+      <section className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,420px)] lg:items-end">
+        <div className="min-w-0">
           <p className="mb-3 text-sm font-black uppercase tracking-[0.24em] text-rose-200">Local admin</p>
-          <h1 className="text-4xl font-black text-white sm:text-5xl">Admin Control Room</h1>
+          <h1 className="text-3xl font-black text-white sm:text-5xl">Admin Control Room</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
             Manage this browser&apos;s free fake-coin balance and demo settings. No real money, Robux, deposits, withdrawals, or cashouts exist here.
           </p>
@@ -154,7 +154,7 @@ export default function AdminPage() {
       </section>
 
       {!loggedIn ? (
-        <Card className="mx-auto max-w-md border-rose-300/25">
+        <Card className="mx-auto w-full max-w-md border-rose-300/25">
           <div className="mb-5 grid h-14 w-14 place-items-center rounded-lg border border-rose-300/40 bg-rose-500/15 text-rose-100">
             <ShieldAlert />
           </div>
@@ -179,13 +179,13 @@ export default function AdminPage() {
           <p className="mt-4 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-slate-300">{message}</p>
         </Card>
       ) : (
-        <div className="grid gap-5 lg:grid-cols-2">
-          <div className="lg:col-span-2 flex flex-wrap gap-3">
-            <Button onClick={logout} variant="ghost">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-2">
+          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-2">
+            <Button onClick={logout} variant="ghost" className="w-full sm:w-auto">
               <LogOut size={18} />
               Lock Admin
             </Button>
-            <Button onClick={loadProfiles} variant="secondary" disabled={loadingProfiles}>
+            <Button onClick={loadProfiles} variant="secondary" disabled={loadingProfiles} className="w-full sm:w-auto">
               <RefreshCcw size={18} />
               {loadingProfiles ? "Loading Accounts" : "Refresh Accounts"}
             </Button>
@@ -194,7 +194,7 @@ export default function AdminPage() {
             <h2 className="text-2xl font-black text-white">Balance Controls</h2>
             <motion.div animate={{ boxShadow: "0 0 28px rgba(168,85,247,.2)" }} className="rounded-lg border border-purple-300/30 bg-purple-500/10 p-4">
               <p className="text-xs font-black uppercase tracking-[0.18em] text-purple-200">Current balance</p>
-              <p className="mt-2 text-4xl font-black text-white">{balance.toLocaleString()}</p>
+              <p className="mt-2 break-words text-3xl font-black text-white sm:text-4xl">{balance.toLocaleString()}</p>
             </motion.div>
             <input
               type="number"
@@ -213,11 +213,11 @@ export default function AdminPage() {
               onChange={(event) => setCoinAmount(Math.max(1, Number(event.target.value) || 1))}
               className="w-full rounded-lg border border-slate-600 bg-slate-950/70 px-4 py-3 font-bold text-white outline-none focus:border-cyan-300"
             />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               <Button onClick={applyAddCoins}>Add Coins</Button>
               <Button onClick={applyRemoveCoins} variant="danger">Remove Coins</Button>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               <Button onClick={() => { resetBalance(); refreshBalance(); setMessage("Balance reset to the configured starting amount."); }} variant="ghost">
                 Reset Balance
               </Button>
@@ -275,7 +275,7 @@ export default function AdminPage() {
                 </div>
                 <p className="mt-2 text-sm text-slate-400">View logged-in player profiles, emails, and fake coin balances.</p>
               </div>
-              <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2">
+              <div className="flex w-full items-center gap-2 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2 sm:w-auto">
                 <Search size={16} className="text-slate-400" />
                 <input
                   value={profileSearch}
@@ -286,7 +286,30 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="overflow-x-auto rounded-lg border border-white/10">
+            <div className="space-y-3 md:hidden">
+              {filteredProfiles.map((profile) => (
+                <div key={profile.id} className="rounded-lg border border-white/10 bg-slate-950/30 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-lg font-black text-white">{profile.username}</p>
+                      <p className="truncate text-sm text-slate-300">{profile.email}</p>
+                    </div>
+                    <p className="shrink-0 text-sm font-black text-green-100">{profile.coins.toLocaleString()}</p>
+                  </div>
+                  <div className="mt-4 space-y-2 rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-slate-400">
+                    <p>Updated: {profile.updated_at ? new Date(profile.updated_at).toLocaleString() : "Never"}</p>
+                    <p className="break-all font-mono">ID: {profile.id}</p>
+                  </div>
+                </div>
+              ))}
+              {filteredProfiles.length === 0 && (
+                <div className="rounded-lg border border-white/10 bg-white/5 p-6 text-center text-sm text-slate-400">
+                  No account profiles found.
+                </div>
+              )}
+            </div>
+
+            <div className="hidden overflow-x-auto rounded-lg border border-white/10 md:block">
               <table className="w-full min-w-[720px] text-left text-sm">
                 <thead className="bg-white/5 text-xs uppercase tracking-[0.16em] text-slate-400">
                   <tr>
