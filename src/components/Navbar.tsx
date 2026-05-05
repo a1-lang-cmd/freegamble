@@ -17,6 +17,10 @@ const links = [
   { href: "/towers", label: "Towers" },
   { href: "/coinflip", label: "Coinflip" },
   { href: "/wheel", label: "Wheel" },
+  { href: "/dice", label: "Dice" },
+  { href: "/limbo", label: "Limbo" },
+  { href: "/keno", label: "Keno" },
+  { href: "/hilo", label: "Hi-Lo" },
   { href: "/leaderboard", label: "Leaderboard" }
 ];
 
@@ -46,7 +50,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/admin"
-            className="hidden h-10 w-10 place-items-center rounded-lg border border-rose-300/20 bg-rose-500/5 text-rose-200/70 transition hover:border-rose-300/50 hover:bg-rose-500/15 hover:text-rose-100 sm:grid"
+            className="grid h-10 w-10 place-items-center rounded-lg border border-rose-300/20 bg-rose-500/5 text-rose-200/70 transition hover:border-rose-300/50 hover:bg-rose-500/15 hover:text-rose-100"
             aria-label="Admin"
           >
             <Shield size={18} />

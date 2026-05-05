@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bomb, CircleDot, Coins, Gem, Hand, Orbit, RadioTower, Rows3, Sparkles, Trophy, Waves } from "lucide-react";
+import { ArrowUpDown, Bomb, CircleDot, Coins, Dices, Gem, Grid3X3, Hand, Orbit, RadioTower, Rows3, Sparkles, TrendingUp, Trophy, Waves } from "lucide-react";
 import { DailyReward } from "@/components/DailyReward";
 import { FakeValueNotice } from "@/components/FakeValueNotice";
 import { Card } from "@/components/ui/Card";
@@ -83,6 +83,38 @@ const games = [
     description: "Spin a huge multiplier wheel with free fake-coin stakes.",
     icon: Orbit,
     color: "text-fuchsia-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/dice",
+    title: "Dice",
+    description: "Pick a roll-under target and chase a clean fake-coin multiplier.",
+    icon: Dices,
+    color: "text-cyan-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/limbo",
+    title: "Limbo",
+    description: "Choose a target multiplier and hope the roll clears it.",
+    icon: TrendingUp,
+    color: "text-green-200",
+    glow: "hover:shadow-green"
+  },
+  {
+    href: "/keno",
+    title: "Keno",
+    description: "Pick numbers and draw for fake-coin hit payouts.",
+    icon: Grid3X3,
+    color: "text-blue-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/hilo",
+    title: "Hi-Lo",
+    description: "Guess higher or lower and build a streak multiplier.",
+    icon: ArrowUpDown,
+    color: "text-amber-200",
     glow: "hover:shadow-purple"
   },
   {
