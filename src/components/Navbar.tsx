@@ -25,6 +25,16 @@ const links = [
   { href: "/baccarat", label: "Baccarat" },
   { href: "/videopoker", label: "Video Poker" },
   { href: "/goalrush", label: "Goal Rush" },
+  { href: "/diamonds", label: "Diamonds" },
+  { href: "/slide", label: "Slide" },
+  { href: "/pump", label: "Pump" },
+  { href: "/snakes", label: "Snakes" },
+  { href: "/treasure", label: "Treasure" },
+  { href: "/crates", label: "Crates" },
+  { href: "/meteor", label: "Meteor" },
+  { href: "/colorpick", label: "Color Pick" },
+  { href: "/laser", label: "Laser" },
+  { href: "/racer", label: "Racer" },
   { href: "/leaderboard", label: "Leaderboard" }
 ];
 

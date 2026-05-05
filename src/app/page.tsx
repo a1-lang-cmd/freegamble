@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpDown, Bomb, CircleDot, Club, Coins, Dices, Eraser, Gem, Goal, Grid3X3, Hand, Landmark, Orbit, RadioTower, Rows3, Sparkles, TrendingUp, Trophy, Waves } from "lucide-react";
+import { Archive, ArrowUpDown, Bomb, Circle, CircleDot, Club, Coins, Crosshair, Diamond, Dices, Eraser, Flame, Flag, Gem, Goal, Grid3X3, Hand, Landmark, Orbit, Package, Palette, RadioTower, Rows3, SlidersHorizontal, Sparkles, TrendingUp, Trophy, Waves, Worm } from "lucide-react";
 import { DailyReward } from "@/components/DailyReward";
 import { FakeValueNotice } from "@/components/FakeValueNotice";
 import { Card } from "@/components/ui/Card";
@@ -146,6 +146,86 @@ const games = [
     title: "Goal Rush",
     description: "Pick a penalty lane and beat the keeper for a fast 2x.",
     icon: Goal,
+    color: "text-green-200",
+    glow: "hover:shadow-green"
+  },
+  {
+    href: "/diamonds",
+    title: "Diamonds",
+    description: "Reveal five gem colors and win when the colors match.",
+    icon: Diamond,
+    color: "text-cyan-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/slide",
+    title: "Slide",
+    description: "Set a safe zone and try to stop the slider inside it.",
+    icon: SlidersHorizontal,
+    color: "text-cyan-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/pump",
+    title: "Pump",
+    description: "Inflate a balloon multiplier and cash out before it pops.",
+    icon: Circle,
+    color: "text-rose-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/snakes",
+    title: "Snakes",
+    description: "Climb rows and avoid the hidden snake tile.",
+    icon: Worm,
+    color: "text-green-200",
+    glow: "hover:shadow-green"
+  },
+  {
+    href: "/treasure",
+    title: "Treasure",
+    description: "Pick a chest and reveal a hidden fake-coin multiplier.",
+    icon: Archive,
+    color: "text-amber-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/crates",
+    title: "Crates",
+    description: "Open mystery crates and avoid the busted one.",
+    icon: Package,
+    color: "text-purple-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/meteor",
+    title: "Meteor",
+    description: "Survive meteor waves while the multiplier rises.",
+    icon: Flame,
+    color: "text-orange-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/colorpick",
+    title: "Color Pick",
+    description: "Choose a weighted color for different fake payouts.",
+    icon: Palette,
+    color: "text-fuchsia-200",
+    glow: "hover:shadow-purple"
+  },
+  {
+    href: "/laser",
+    title: "Laser",
+    description: "Charge the laser and try to land inside the safe hit window.",
+    icon: Crosshair,
+    color: "text-cyan-200",
+    glow: "hover:shadow-neon"
+  },
+  {
+    href: "/racer",
+    title: "Racer",
+    description: "Pick a neon racer and watch the sprint finish.",
+    icon: Flag,
     color: "text-green-200",
     glow: "hover:shadow-green"
   },
